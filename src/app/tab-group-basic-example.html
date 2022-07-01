@@ -1,0 +1,38 @@
+<mat-tab-group>
+    <mat-tab *ngFor="let tab of tabs; let i = index" label="Tab {{i+1}}">
+        <ng-template mat-tab-label>
+            <span>Tab {{i+1}}</span>
+            <br/>
+            <span class="add-delete-button" *ngIf="i === 0" (click)="addTab()" >&#43;</span>
+            <span class="add-delete-button delete-button " *ngIf="i > 0" (click)="removeTab(i)">&#8722;</span>
+        </ng-template>
+        <!--new -->
+        <mat-grid-list cols="4" rowHeight="1:2">
+            <mat-grid-tile colspan="1">
+                <mat-form-field>
+                    <mat-select [(value)]="selected"  (selectionChange)="changeCategory(i, $event)">
+                        <mat-option [value]="d.category" *ngFor="let d of data">{{d.category}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br/>
+                <mat-form-field>
+                    <input value="{{tab.keyword}}" (change)="changeKeyword(i, $event)" matInput>
+                </mat-form-field>
+                <div *ngIf="this.tabs[i].keyword.length <= 0 && this.onSubmit"> Please enter value</div>
+                <br/>
+                <button mat-button color="primary" (click)="searchProduct(i)">Search</button>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="3">
+                <div class="product-detail-content">
+                    <mat-card *ngIf="tab.filterProducts.length <= 0 "> No Result</mat-card>
+                    <mat-card *ngFor="let product of tab.filterProducts">
+                        <p>Title : {{product.title}}</p>
+                        <p>Description  : {{product.description}}</p>
+                        <p>Price : {{product.price}}</p>
+                    </mat-card>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <!--end-->
+    </mat-tab>
+</mat-tab-group>
